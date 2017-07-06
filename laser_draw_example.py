@@ -30,4 +30,3 @@ myRobot.drawPath(coords, draw_speed, height, mode)
 myRobot.loff()
 
 
-myRobot.goto(200, 0, 35, 6000)
