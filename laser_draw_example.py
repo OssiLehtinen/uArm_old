@@ -5,7 +5,7 @@ mode = 1
 steps_per_seg = 10
 x_offset = 170
 height = 150
-draw_speed = 10000
+draw_speed = 1500
 targetWidth = 90
 
 
