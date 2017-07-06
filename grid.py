@@ -1,5 +1,4 @@
 # Script for drawing a grid with the laser for calibration purposes
-# Requires the python library from https://github.com/AnykeyNL/uArmProPython with the goto_laser-modification described in 'issue #1'
 
 # Please, don't leave the arm unattended will operating the laser.
 
