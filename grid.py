@@ -45,3 +45,4 @@ for i in range(-gridSizeY/20, gridSizeY/20+1):
 	myRobot.goto(gridOffsetX+gridSizeX, i*10, workingHeight, 6000)
 	myRobot.goto_laser(gridOffsetX, i*10, workingHeight, 1500)
 	myRobot.goto(gridOffsetX, i*10, workingHeight, 6000) # Switch the laser off
+
