@@ -3,7 +3,7 @@
 
 # Please, don't leave the arm unattended will operating the laser.
 
-import uArmRobot
+import uArmLaserRobot
 
 mode = 1
 
@@ -12,7 +12,7 @@ mode = 1
 serialport = "/dev/ttyACM0"  # for linux like system
 
 # Connect to uArm 
-myRobot = uArmRobot.robot(serialport)
+myRobot = uArmLaserRobot.laserRobot(serialport)
 myRobot.debug = True   # Enable / Disable debug output on screen, by default disabled
 myRobot.connect()
 myRobot.mode(mode)   # Set mode to Normal
