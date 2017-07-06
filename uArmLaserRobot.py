@@ -76,14 +76,20 @@ class laserRobot(uArmRobot.robot):
 
 
 
-    def set_path_start(self, coords, height, move_lift=0):
+    def set_path_start(self, coords, height, mode):
+        
+        move_lift = 0
+        if(mode == 0):
+            move_lift = 5
         
         self.goto(coords[0][0][0], coords[0][0][1], height+move_lift*2, 6000)
-        for i in range(0, 5):
-            self.goto_laser(coords[0][0][0], coords[0][0][1], height+move_lift*2, 6000)
-            #time.sleep(0.0001)
-            self.goto(coords[0][0][0], coords[0][0][1], height+move_lift*2, 6000)
-            time.sleep(1.0)
+        
+        if(mode == 1):
+            for i in range(0, 5):
+                self.goto_laser(coords[0][0][0], coords[0][0][1], height+move_lift*2, 6000)
+                #time.sleep(0.0001)
+                self.goto(coords[0][0][0], coords[0][0][1], height+move_lift*2, 6000)
+                time.sleep(1.0)
 
 
     def drawPath(self, coords, draw_speed, height, mode):
@@ -114,6 +120,7 @@ class laserRobot(uArmRobot.robot):
 
 
         # Back to the starting point (and turn the laser off)
+        self.goto(lastCoord[0], lastCoord[1], height+move_lift*2, 6000)
         self.goto(coords[0][0][0], coords[0][0][1], height+move_lift*2, 6000)
 
 

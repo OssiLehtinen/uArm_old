@@ -4,9 +4,9 @@ mode = 1
 
 steps_per_seg = 10
 x_offset = 170
-height = 130
-draw_speed = 3000
-targetWidth = 70
+height = 150
+draw_speed = 10000
+targetWidth = 90
 
 
 
@@ -22,10 +22,12 @@ myRobot.mode(mode)   # Set mode to Normal
 
 coords = myRobot.parseSVG('bird.svg', targetWidth, x_offset, steps_per_seg)
 
-myRobot.set_path_start(coords, height)
+myRobot.set_path_start(coords, height, mode)
 
 myRobot.drawPath(coords, draw_speed, height, mode)
 
 # The starting point
 myRobot.loff()
 
+
+myRobot.goto(200, 0, 35, 6000)
