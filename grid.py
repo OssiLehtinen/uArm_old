@@ -3,12 +3,7 @@
 
 # Please, don't leave the arm unattended will operating the laser.
 
-
-from svgpathtools import svg2paths, wsvg
-import numpy as np
-
 import uArmRobot
-import time
 
 mode = 1
 
