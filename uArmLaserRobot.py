@@ -13,9 +13,12 @@ import protocol_swiftpro as protocol
 from svgpathtools import svg2paths, wsvg
 import numpy as np
 import time
+from PIL import Image  
 
 class laserRobot(uArmRobot.robot):
-
+	
+    delay_after_move = 0.0
+    
     def goto_laser(self,x,y,z,speed):
         self.moving = True
         x = str(round(x, 2))
@@ -97,7 +100,7 @@ class laserRobot(uArmRobot.robot):
         # Lift the pen if using one
         move_lift = 0
         if(mode == 0):
-            move_lift = 5
+            move_lift = 3
 
         
         # The starting point
@@ -122,6 +125,100 @@ class laserRobot(uArmRobot.robot):
         # Back to the starting point (and turn the laser off)
         self.goto(lastCoord[0], lastCoord[1], height+move_lift*2, 6000)
         self.goto(coords[0][0][0], coords[0][0][1], height+move_lift*2, 6000)
+	
+    def drawBitmap(self, imagepath, printSizeX, lineSpacing, xOffset, height, draw_speed, mode):
+		
+        # Lift the pen if using one
+        move_lift = 0
+        if(mode == 0):
+            move_lift = 3
+
+                
+        im = Image.open(imagepath)   
+
+        smallImSizeX = printSizeX*2 # Determines the resolution of the dithering
+
+        scale = float(smallImSizeX)/float(im.size[0])
+
+        im2 = im.resize( (int(scale*im.size[0]), int(scale*im.size[1])) )
+        im = im2.convert("1")
+
+        imageSizeX = im.size[0]
+        imageSizeY = im.size[1]
+
+        scale = float(printSizeX)/float(imageSizeX)
+
+        printSizeY = imageSizeY*scale
+        yOffset = -printSizeY/2
+
+        # Y-direction
+        for j in range(int(yOffset/lineSpacing), -int(yOffset/lineSpacing)+1):
+            
+            cY = j*lineSpacing
+            print(cY)
+            
+            cp = 0
+            nextp = cp+1
+            cpVal = im.getpixel((cp, int((cY-yOffset)/scale)))
+            self.goto(xOffset, cY, height+move_lift, 6000)
+            
+            while(cp < imageSizeX-1):
+                
+                while(im.getpixel((nextp, int((cY-yOffset)/scale)))==cpVal and nextp < imageSizeX-1):
+                    nextp = nextp + 1
+                
+                if(cpVal == 0):
+                    self.goto_laser(prevX, prevY, height, draw_speed)
+                    self.goto_laser(xOffset+nextp*scale, cY, height, draw_speed)
+                    self.goto(xOffset+nextp*scale, cY, height+move_lift, draw_speed)
+                else:
+                    self.goto(xOffset+nextp*scale, cY, height+move_lift, 6000)
+                
+                prevX = xOffset+nextp*scale
+                prevY = cY
+                
+                self.goto(prevX, prevY, height+move_lift, 6000)
+                cp = nextp
+                cpVal = im.getpixel((cp, int((cY-yOffset)/scale)))
+
+
+        # X-direction
+        for j in range(int(xOffset/lineSpacing), int((xOffset+printSizeX)/lineSpacing)):
+            
+            cX = j*lineSpacing
+            print(cX)
+            
+            cp = 0
+            nextp = cp+1
+            cpVal = im.getpixel((int((cX-xOffset)/scale), cp))
+            self.goto(cX, yOffset, height+move_lift, 6000)
+            
+            while(cp < imageSizeY-1):
+                
+                while(im.getpixel((int((cX-xOffset)/scale), nextp))==cpVal and nextp < imageSizeY-1):
+                    nextp = nextp + 1
+                
+                if(cpVal == 0):
+                    self.goto_laser(prevX, prevY, height, draw_speed)
+                    self.goto_laser(cX, yOffset+nextp*scale, height, draw_speed)
+                    self.goto(cX, yOffset+nextp*scale, height+move_lift, draw_speed)
+                else:
+                    self.goto(cX, yOffset+nextp*scale, height+move_lift, 6000)
+                
+                prevX = cX
+                prevY = yOffset+nextp*scale
+                
+                self.goto(prevX, prevY, height+move_lift, 6000)
+                cp = nextp
+                cpVal = im.getpixel((int((cX-xOffset)/scale), cp))
+
+
+
+
+
+        self.loff()
+
+
 
 
 
