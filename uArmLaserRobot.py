@@ -142,7 +142,7 @@ class laserRobot(uArmRobot.robot):
 
         im2 = im.resize( (int(scale*im.size[0]), int(scale*im.size[1])) )
         im = im2.convert("1")
-
+		
         imageSizeX = im.size[0]
         imageSizeY = im.size[1]
 
@@ -162,13 +162,16 @@ class laserRobot(uArmRobot.robot):
             cpVal = im.getpixel((cp, int((cY-yOffset)/scale)))
             self.goto(xOffset, cY, height+move_lift, 6000)
             
+            prevX = xOffset
+            prevY = cY
+            
             while(cp < imageSizeX-1):
                 
                 while(im.getpixel((nextp, int((cY-yOffset)/scale)))==cpVal and nextp < imageSizeX-1):
                     nextp = nextp + 1
                 
                 if(cpVal == 0):
-                    self.goto_laser(prevX, prevY, height, draw_speed)
+                    self.goto(prevX, prevY, height, draw_speed)
                     self.goto_laser(xOffset+nextp*scale, cY, height, draw_speed)
                     self.goto(xOffset+nextp*scale, cY, height+move_lift, draw_speed)
                 else:
@@ -192,6 +195,8 @@ class laserRobot(uArmRobot.robot):
             nextp = cp+1
             cpVal = im.getpixel((int((cX-xOffset)/scale), cp))
             self.goto(cX, yOffset, height+move_lift, 6000)
+            prevX = cX
+            prevY = yOffset
             
             while(cp < imageSizeY-1):
                 
@@ -199,7 +204,7 @@ class laserRobot(uArmRobot.robot):
                     nextp = nextp + 1
                 
                 if(cpVal == 0):
-                    self.goto_laser(prevX, prevY, height, draw_speed)
+                    self.goto(prevX, prevY, height, draw_speed)
                     self.goto_laser(cX, yOffset+nextp*scale, height, draw_speed)
                     self.goto(cX, yOffset+nextp*scale, height+move_lift, draw_speed)
                 else:
