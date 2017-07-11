@@ -5,10 +5,9 @@ mode = 1
 steps_per_seg = 10
 x_offset = 170
 height = 150
-draw_speed = 1500
-targetWidth = 90
-
-
+draw_speed = 6000
+targetWidth = 20
+lineSpacing = 1.0
 
 #Configure Serial port
 #serialport = "com3"          # for windows 
@@ -25,7 +24,7 @@ coords = myRobot.parseSVG('bird.svg', targetWidth, x_offset, steps_per_seg)
 myRobot.set_path_start(coords, height, mode)
 
 myRobot.drawPath(coords, draw_speed, height, mode)
-
+myRobot.fillSVG('bird.svg', targetWidth, lineSpacing, x_offset, height, draw_speed, mode) # The bird svg doesn't have fill atm, so this is a bit silly...
 # The starting point
 myRobot.loff()
 
