@@ -1,6 +1,6 @@
 # Script for drawing a grid with the laser for calibration purposes
 
-# Please, don't leave the arm unattended will operating the laser.
+# Please, don't leave the arm unattended while operating the laser.
 
 import uArmLaserRobot
 
