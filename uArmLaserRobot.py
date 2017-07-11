@@ -1,23 +1,27 @@
 # Extensions to the uArm Swift Pro library by: Richard Garsthagen
-# uArm Swift Pro - Python Library
-# Created by: Richard Garsthagen - the.anykey@gmail.com
-# V0.2 - June 2017 - Still under development
 #
-# Extension authored by Ossi Lehtinen.
+# Extension to the authored by Ossi Lehtinen.
 # The laser cuts holes to stuff. Use at your own risk and don't leave unattended.
-
+#
+# I'm most curious if you create something neat with this, so if you like, don't hesitate to drop me an email: ossi.lehtinen@gmail.com
+#
+# The svgo and convert binaries are external to Python. Meaning, you need to install imagemagick and node.js on your system (e.g., sudo apt-get install imagemagick npm) and the svgo command for node.js (npg install -g svgo)
 
 
 import uArmRobot
 import protocol_swiftpro as protocol
-from svgpathtools import svg2paths, wsvg
+from svgpathtools import svg2paths2, wsvg
 import numpy as np
 import time
 from PIL import Image  
+from subprocess import call
+
 
 class laserRobot(uArmRobot.robot):
 	
     delay_after_move = 0.0
+    move_pen_lift = 3.0
+    temp_folder = "/var/tmp"
     
     def goto_laser(self,x,y,z,speed):
         self.moving = True
@@ -31,11 +35,14 @@ class laserRobot(uArmRobot.robot):
     def loff(self):
         self.goto(200,0,150,6000)
             
-    def parseSVG(self, filename, targetWidth, x_offset, steps_per_seg):
-
+    def parseSVG(self, filename, targetWidth, xOffset, steps_per_seg):
+        
+        call(["svgo", filename, "-o" , self.temp_folder + "/clean.svg"])
+        
         # Parse the path
-        paths, attributes = svg2paths(filename)
-
+        paths, attributes, svg_attrs = svg2paths2(self.temp_folder + "/clean.svg")
+        
+        viewBox = map(float, svg_attrs[u'viewBox'].split(' '))
 
         # Find the bounding box
         xmin = 100000
@@ -72,7 +79,7 @@ class laserRobot(uArmRobot.robot):
                 segcoords = []
                 for p in range(steps_per_seg+1):
                     cp = seg.point(float(p)/float(steps_per_seg))
-                    segcoords.append([scale*(np.real(cp)-xmin)+x_offset, scale*(np.imag(cp)-ymin) - scale*((ymax-ymin)/2.0)])
+                    segcoords.append([scale*(np.real(cp)-xmin)+xOffset, scale*(np.imag(cp)-ymin) - scale*((ymax-ymin)/2.0)])
                 coords.append(segcoords)
 
         return coords
@@ -83,7 +90,7 @@ class laserRobot(uArmRobot.robot):
         
         move_lift = 0
         if(mode == 0):
-            move_lift = 5
+            move_lift = self.move_pen_lift
         
         self.goto(coords[0][0][0], coords[0][0][1], height+move_lift*2, 6000)
         
@@ -100,7 +107,7 @@ class laserRobot(uArmRobot.robot):
         # Lift the pen if using one
         move_lift = 0
         if(mode == 0):
-            move_lift = 3
+            move_lift = self.move_pen_lift
 
         
         # The starting point
@@ -125,13 +132,20 @@ class laserRobot(uArmRobot.robot):
         # Back to the starting point (and turn the laser off)
         self.goto(lastCoord[0], lastCoord[1], height+move_lift*2, 6000)
         self.goto(coords[0][0][0], coords[0][0][1], height+move_lift*2, 6000)
-	
+    
+    def fillSVG(self, filename, targetWidth, lineSpacing, xOffset, height, draw_speed, mode):
+        
+        # Convert the svg to bitmap
+        call(["convert", "-density", "1000", filename, self.temp_folder + "/clean.png"])
+        
+        self.drawBitmap(self.temp_folder + "/clean.png", targetWidth, lineSpacing, xOffset, height, draw_speed, mode)
+
     def drawBitmap(self, imagepath, printSizeX, lineSpacing, xOffset, height, draw_speed, mode):
 		
         # Lift the pen if using one
         move_lift = 0
         if(mode == 0):
-            move_lift = 3
+            move_lift = self.move_pen_lift
 
                 
         im = Image.open(imagepath)   
