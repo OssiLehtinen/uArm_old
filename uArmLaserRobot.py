@@ -15,13 +15,14 @@ import numpy as np
 import time
 from PIL import Image  
 from subprocess import call
+import tempfile
 
 
 class laserRobot(uArmRobot.robot):
 	
     delay_after_move = 0.0
     move_pen_lift = 3.0
-    temp_folder = "/var/tmp"
+    temp_folder = tempfile.mkdtemp()
     
     def goto_laser(self,x,y,z,speed):
         self.moving = True
