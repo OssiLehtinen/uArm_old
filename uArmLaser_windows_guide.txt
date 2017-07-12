@@ -21,12 +21,13 @@ Set your 'path' environment variable to include your python path:
 	
 Install python extensions:
 
-Start command prompt: Start-menu -> Command prompt
-pip install pyserial
-pip install svgpathtools
-pip install svgwrite
-pip install numpy
-pip install pillow
+1. Start command prompt: Start-menu -> Command prompt
+2. Run commands:
+	pip install pyserial
+	pip install svgpathtools
+	pip install svgwrite
+	pip install numpy
+	pip install pillow
 
 
 
