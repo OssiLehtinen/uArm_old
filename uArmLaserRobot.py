@@ -39,9 +39,12 @@ class laserRobot(uArmRobot.robot):
             
     def parseSVG(self, filename, targetWidth, xOffset, steps_per_seg):
         
-        call(["svgo", filename, "-o" , self.temp_folder + "/clean.svg"])
+        if(platform.system() == "Windows"):
+            call(["node", "C:/Users/oswald/AppData/Roaming/npm/node_modules/svgo/bin/svgo", filename, "-o", self.temp_folder + "/clean.svg"])
+        else:
+            call(["svgo", filename, "-o", self.temp_folder + "/clean.svg"])
         
-        # Parse the path
+         # Parse the path
         paths, attributes, svg_attrs = svg2paths2(self.temp_folder + "/clean.svg")
         
         viewBox = map(float, svg_attrs[u'viewBox'].split(' '))
