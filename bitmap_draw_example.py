@@ -23,3 +23,9 @@ lineSpacing = .5
 
 myRobot.drawBitmap('skull.jpg', targetWidth, lineSpacing, x_offset, height, draw_speed)
 
+
+
+# Dock the arm before exit
+myRobot.goto(225, 0, 150, 6000)
+myRobot.goto(130, 0, 90, 6000)
+myRobot.goto(97, 0, 30, 6000)
