@@ -139,7 +139,7 @@ class laserRobot(uArmRobot.robot):
         
         # Convert the svg to bitmap
         concmd = "convert"
-        if(platform.system == "Windows"):
+        if(platform.system() == "Windows"):
             concmd = "magick"
         
         call([concmd, "-density", "1000", filename, self.temp_folder + "/clean.png"])
