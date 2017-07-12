@@ -76,13 +76,13 @@ class laserRobot(uArmRobot.robot):
             path = paths[i]
             attribute = attributes[i]
             if('stroke' in attribute):
-				for seg in path:
-					segcoords = []
-					for p in range(steps_per_seg+1):
-						cp = seg.point(float(p)/float(steps_per_seg))
-						segcoords.append([scale*(np.real(cp)-xmin)+xOffset, scale*(np.imag(cp)-ymin) - scale*((ymax-ymin)/2.0)])
-					coords.append(segcoords)
-		
+                for seg in path:
+                    segcoords = []
+                    for p in range(steps_per_seg+1):
+                        cp = seg.point(float(p)/float(steps_per_seg))
+                        segcoords.append([scale*(np.real(cp)-xmin)+xOffset, scale*(np.imag(cp)-ymin) - scale*((ymax-ymin)/2.0)])
+                    coords.append(segcoords)
+        
         return coords
 
 
