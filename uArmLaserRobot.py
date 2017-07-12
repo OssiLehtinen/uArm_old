@@ -16,6 +16,7 @@ import time
 from PIL import Image  
 from subprocess import call
 import tempfile
+import platform
 
 
 class laserRobot(uArmRobot.robot):
@@ -137,7 +138,11 @@ class laserRobot(uArmRobot.robot):
     def fillSVG(self, filename, targetWidth, lineSpacing, xOffset, height, draw_speed, mode):
         
         # Convert the svg to bitmap
-        call(["convert", "-density", "1000", filename, self.temp_folder + "/clean.png"])
+        concmd = "convert"
+        if(platform.system == "Windows"):
+            concmd = "magick"
+        
+        call([concmd, "-density", "1000", filename, self.temp_folder + "/clean.png"])
         
         self.drawBitmap(self.temp_folder + "/clean.png", targetWidth, lineSpacing, xOffset, height, draw_speed, mode)
 
