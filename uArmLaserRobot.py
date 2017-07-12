@@ -47,8 +47,6 @@ class laserRobot(uArmRobot.robot):
          # Parse the path
         paths, attributes, svg_attrs = svg2paths2(self.temp_folder + "/clean.svg")
         
-        viewBox = map(float, svg_attrs[u'viewBox'].split(' '))
-
         # Find the bounding box
         xmin = 100000
         xmax = -10000
