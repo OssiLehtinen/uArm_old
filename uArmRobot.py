@@ -9,7 +9,7 @@ import threading
 import sys
 import math
 from math import pi
-
+import sys
 
 class robot:
     serid = 100
@@ -64,13 +64,20 @@ class robot:
             id = self.serid
             self.serid += 1
             cmnd = "#{} {}".format(id,cmnd)
-            cmndString = bytes(cmnd + "\n", 'utf8')
+            if sys.version_info >= (3,0):
+                cmndString = bytes(cmnd + "\n", 'utf8')
+            else:
+                cmndString = bytes(cmnd + "\n")
             if (self.debug): print ("Serial send: {}".format(cmndString))
             self.ser.write(cmndString)
             if (waitresponse):
                 line = self.ser.readline()
-                while not line.startswith(bytes("$" + str(id), 'utf8')):
-                    line = self.ser.readline()
+                if sys.version_info >= (3,0):
+                    while not line.startswith(bytes("$" + str(id), 'utf8')):
+                        line = self.ser.readline()
+                else:
+                    while not line.startswith("$" + str(id)):
+                        line = self.ser.readline()
                 if (self.debug): print ("Response {}".format(line))
                 if (self.moving):
                     self.moving = False
