@@ -79,7 +79,7 @@ class laserRobot(uArmRobot.robot):
         for i in range(len(paths)):
             path = paths[i]
             attribute = attributes[i]
-            if('stroke' in attribute):
+            if('stroke' in attribute or 'class' in attribute):
                 for seg in path:
                     segcoords = []
                     for p in range(steps_per_seg+1):
