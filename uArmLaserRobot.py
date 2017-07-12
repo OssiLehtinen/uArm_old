@@ -75,14 +75,14 @@ class laserRobot(uArmRobot.robot):
         for i in range(len(paths)):
             path = paths[i]
             attribute = attributes[i]
-            # A crude check for wether a path should be drawn. Does it have a style defined?
-            for seg in path:
-                segcoords = []
-                for p in range(steps_per_seg+1):
-                    cp = seg.point(float(p)/float(steps_per_seg))
-                    segcoords.append([scale*(np.real(cp)-xmin)+xOffset, scale*(np.imag(cp)-ymin) - scale*((ymax-ymin)/2.0)])
-                coords.append(segcoords)
-
+            if('stroke' in attribute):
+				for seg in path:
+					segcoords = []
+					for p in range(steps_per_seg+1):
+						cp = seg.point(float(p)/float(steps_per_seg))
+						segcoords.append([scale*(np.real(cp)-xmin)+xOffset, scale*(np.imag(cp)-ymin) - scale*((ymax-ymin)/2.0)])
+					coords.append(segcoords)
+		
         return coords
 
 
