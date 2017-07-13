@@ -143,7 +143,7 @@ class laserRobot(uArmRobot.robot):
         if(platform.system() == "Windows"):
             concmd = "magick"
         
-        call([concmd, "-density", "1000", filename, self.temp_folder + "/clean.png"])
+        call([concmd, "-density", "1000", "-background", "white", "-alpha", "remove", filename, self.temp_folder + "/clean.png"])
         
         self.drawBitmap(self.temp_folder + "/clean.png", targetWidth, lineSpacing, xOffset, height, draw_speed, mode)
 
