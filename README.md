@@ -1,5 +1,5 @@
 # uArm
-## Pleae note, this repository is inactive. Go to https://github.com/OssiLehtinen/uArmProPython for the active development version.
+## Pleae note, this repository is inactive. Go to https://github.com/OssiLehtinen/uArm for the active development version.
 
 
 
