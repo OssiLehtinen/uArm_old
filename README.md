@@ -1,4 +1,8 @@
 # uArm
+## Pleae note, this repository is inactive. Go to https://github.com/OssiLehtinen/uArmProPython for the active development version.
+
+
+
 Code snippets related to the uArm Swift Pro robotic arm
 
 The uArmPython.py is from Richard Gashaagen's repo at https://github.com/AnykeyNL/uArmProPython with some modifications. 
